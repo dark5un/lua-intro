@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>Lua / Love2d Introduction</title>
+
+  <link rel="stylesheet" href="css/reveal.min.css" />
+  <link rel="stylesheet" href="lib/css/zenburn.css">
+  <link rel="stylesheet" href="css/theme/default.css" id="theme" />
+</head>
+
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <section>
+       <h1>Lua and Love2d</h1>
+       <p>An ultra-fast path to 2D gaming...</p>
+      </section>
+
+      <section>
+        <h2>Oh I realy wanted to make this</h2> 
+        <h2>presentation in Love2d</h2>
+      </section>
+
+      <section>
+        <h2>So what is Lua anyway?</h2>
+      </section>
+
+      <section>
+        <h2>Lua - an extensible extension language</h2>
+      </section>
+
+      <section>
+        <h2>What?</h2>
+        <img src="images/what_q.jpg" />
+      </section>
+
+      <section>
+        <h2>What is Lua like?</h2>
+        <p>Lua has a mix of C-like and Pascal-like syntax.</p> 
+        <p>Lua is dynamically typed (like JavaScript).</p> 
+      </section>
+
+      <section>
+        <h2>Fast syntax</h2>
+        <p>Spaces don't matter</p>
+        <p>Linebreaks don't matter</p>
+        <p>Indentation doesn't matter</p>
+        <p>No semicolons</p>
+        <p>On a given line, any text to the right of -- is considered a comment</p>
+      </section>
+
+      <section>
+        <h2>Numbers.</h2>
+        <p>123 and 0.456 are numbers.</p> 
+        <p>Lua doesn't make a distinction between integer and real numbers, so don't worry, you can safely compare any number.</p> 
+        <p>You can use the mathematical expressions +, -, * and / on numbers.</p>
+
+        <pre><code class="lua">
+> print(2+2)
+4
+> print ( 5 / 2 )
+2.5
+        </code></pre>
+      </section>	
+
+      <section>
+        <h2>Booleans.</h2> 
+        <p>true and false are booleans.</p> 
+        <p>==, >, <, >=, <= are comparison operators.</p>
+        <p>~= is "not equal" operator (instead of !=).</p> 
+        <p>There are also: and, or, not.</p> 
+
+        <pre><code class="lua">
+> print(5 >= 3 and not (3 < 0))
+true
+> print(2.5 == 2)
+false
+      </code></pre>
+      </section>
+
+      <section>
+        <h2>Strings.</h2> 
+        <p>Strings represent a sequence of characters.</p> 
+        <p>They can be enclosed in " (double quote) or ' (single quote) symbols (if you choose one, the other won't be considered a control symbol).</p> 
+        <p>You can also escape symbols with \. Concatenation operator is .. (instead of + in some languages).</p> 
+
+        <pre><code class="lua">
+> print( "I am printin' \"My first string\"\non two lines" )
+I am printin' "My first string"
+on two lines
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>From Numbers To Strings</h2>
+        <p>numbers are automatically treated as strings when concatenated, but other types(such as the boolean (5 == 0) in the example below) are not - use tostring on them.</p>
+
+        <pre><code class="lua">
+> print( "This number is " .. 5 .. " and it equals zero: " .. tostring(5 == 0))
+This number is 5 and it equals zero: false
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>nil.</h2> 
+        <p>nil (like null in many languages) means nothing. And equals nothing except itself. You'll learn more about nil later on.</p> 
+      </section>
+
+      <section>
+        <h2>Tables.</h2>
+        <p>Tables are ubiquitous in Lua.</p> 
+        <p>A table is an array and a hashmap (dictionary) at the same time.</p> 
+        <p>It is an ad hoc data structure.</p> 
+        <p>An empty table is defined like this: {}.</p> 
+        <p>Table keys can be of any type - integer, string, boolean or even another table.</p> 
+
+        <pre><code class="lua">
+> x = {}          -- Wow, we defined our first variable! Yes, it is simple like this.
+> x[1] = "our first item"
+> print(x[1])     -- This is how we get a value by key from the table
+our first item
+> x["wm"] = "awesome"
+> print(x["wm"])
+awesome
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>Initializing Tables</h2>
+        <p>You can define a table and some initial key values simultaneously.</p>
+        <p>This is done like: y = { key = "somevalue", anotherkey = "anothervalue" }.</p>
+        <p>Comma is a separator here.</p>
+        <p>Only string keys (without quotes) are supported this way.</p>
+        <p>Lua offers one nifty mechanism for tables - you can access the values by the string key with following syntax: table.key. This creates an illusion of a data structure.</p>
+
+        <pre><code class="lua">
+> x = {}
+> x.color = "white"  -- Same as x["color"] = "white"
+> print(x.color)
+white
+> x.wm_langs = { xmonad = "Haskell", awesome = "Lua" }
+> print(x.wm_langs.awesome) -- Same as x["wm_langs"]["awesome"]
+Lua
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>Nil/Empty Tables</h2>
+        <p>If table doesn't have any value for the given key it means that the value equals nil.</p>
+
+        <pre><code class="lua">
+> x = {}
+> print(x.blahblah)
+nil
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>Initializing Tables</h2>
+        <p>You can initialize tables without specifying keys, then it will act as an array with values mapped to number keys.</p>
+
+        <pre><code class="lua">
+> x = { "first", "second", "third" }
+> print(x[2])
+second
+> print(x.2)     -- No, no! Only string keys can be referenced like this!
+stdin:1: `)' expected near `.2'
+> print(x["2"])  -- 2 and "2" are not equal, of course
+nil
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>Function.</h2>
+        <p>We will talk about functions later, now you should know, that any function can be assigned to a variable, passed as an argument or be returned from another function.</p>
+
+        <pre><code class="lua">
+> ourfunction = print
+> ourfunction(2+2)
+4
+> get_length = string.len
+> ourfunction(get_length("some string"))
+11
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>Variables</h2>
+        <p>Lua is dynamically typed.</p>
+        <p>That means that you don't have to define the type explicitly - any variable can have any type.</p>
+        <p>Until variable gets declared it has the value nil.</p>
+        <p>To declare a variable just assign value to it.</p>
+
+        <pre><code class="lua">
+> print(a)  -- a wasn't declared yet
+nil
+> a = 42
+> print(a)
+42
+> a = "the answer is " .. a
+> print(a)
+the answer is 42
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>Local Variables</h2>
+        <p>Whenever you assign value to a variable, it becomes visible to the whole environment.</p>
+        <p>It becomes global (you can avoid it by using modules)</p>
+        <p>To keep your variables inside use the keyword local.</p> 
+        <p>With local your variable will be visible only to the block (function, control structure, file) where it is defined.</p>
+
+        <pre><code class="lua">
+> a = 42
+> if a == 42 then            -- If you press "Return" here, the next line will be 
+>> local a = 10              -- preceeded with >>. This means that you are currently
+>> print("Inside: " .. a)    -- inside the block (in this case, if..then block)
+>> local b = 100
+>> end
+Inside: 10
+> print(a)
+42                           -- See, local binding replaced a with 10 only inside the block
+> print(b)
+nil                          -- And the variable b was never globally declared
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>Multiple assignment</h2>
+        <p>In Lua you can assign many values to many variables at the same time. It looks like this:</p>
+
+        <pre><code class="lua">
+> a, b, c = 1, "and", 2
+> print(a..b..c)
+1and2
+> a, b, c = 1, "and"
+> print(c)
+nil      -- c hadn't got its value pair, so it was assigned to nil
+> a, b, c = 5, "and", 6, "and", 7
+> print(a..b..c)
+5and6    -- all unused values just went to Limbo
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>Conditions</h2>
+        <p>The syntax is simple: if condition then code else code end.</p>
+
+        <pre><code class="lua">
+> food = "beans"
+> if food == "cake" then
+>> print("Yummy!")
+>> else
+>> print("Ew, I won't eat that!")
+>> end
+Ew, I won't eat that!
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>We can leave aside the else part if we are not interested in it.</h2>
+
+        <pre><code class="lua">
+> under_attack = true
+> if under_attack then    -- Booleans can be used like this in conditions
+>> print("Alarm!")
+>> end
+Alarm!
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>Elseif</h2>
+        <p>If you want to analyze more conditions, use elseif:</p>
+
+        <pre><code class="lua">
+> n = -42
+> if n > 0 then
+>> print("Positive")
+>> elseif n < 0 then
+>> print("Negative")
+>> else
+>> print("Zero")
+>> end
+Negative
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>Conditional loop.</h2>
+        <p>Has the following syntax: while condition do code end.</p>
+
+        <pre><code class="lua">
+> i, r = 0, ""
+> while i < 10 do
+>> r = r .. i
+>> i = i + 1
+>> end
+> print(r)
+0123456789
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>For loop.</h2>
+        <p>To loop through a range of numbers use the folowing construct:</p>
+        <p>for var = start_num,end_num do code end.</p>    
+
+        <pre><code class="lua">
+> r = ""
+> for i = 0, 9 do
+>> r = r .. i
+>> end
+> print(r)
+0123456789
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>Foreach loop.</h2>
+        <p>Lua allows you iterate through a table with the following syntax:</p>  
+        <p>for key_var, value_var in pairs(table_name) do code end.</p>
+
+        <pre><code class="lua">
+> a = { red="#FF0000", yellow="#FFFF00", white="#FFFFFF" }
+> for name, color_code in pairs(a) do
+>> print(name .. " is " .. color_code)
+>> end
+yellow is #FFFF00
+white is #FFFFFF
+red is #FF0000
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>Ipairs</h2>
+        <p>You can iterate through an "array" with ipairs.</p>
+        <p>In this case the order is guaranteed.</p>
+
+        <pre><code class="lua">
+> a, caesar = { "veni, ", "vidi, ", "vici" }, ""
+> for i, v in ipairs(a) do
+>> caesar = caesar .. v    -- We just don't use the key, only value
+>> end
+> print(caesar)
+veni, vidi, vici
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>Functions</h2>
+        <p>The basic syntax for defining a function is: function_name = function(arguments) code end.</p>
+        <p>To return the value from a function use the keyword return.</p> 
+
+        <pre><code class="lua">
+> sum = function(a,b) return a + b end
+> print( sum(2,2) )
+4
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>Arguments</h2>
+        <p>If you don't supply some arguments to a function, then they will just be assigned to nil.</p>
+
+        <pre><code class="lua">
+> print_three_args = function(a, b, c)
+>> print("First: " .. tostring(a))    -- We use tostring() here because 
+>> print("Second: " .. tostring(b))   -- nil is not automatically cast
+>> print("Third: " .. tostring(c))    -- when concatenated
+>> end
+> print_three_args(10,20)
+First: 10
+Second: 20
+Third: nil
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>Return Values</h2>
+        <p>The function can return more than one value at once.</p>
+        <p>You need to use multiple assignment to get all result values.</p>
+
+        <pre><code class="lua">
+> sum_and_diff = function(a, b) 
+>> return a+b, a-b
+>> end
+> x, y = sum_and_diff(5,3)
+> print(x, y)   -- print() can actually handle more than one argument.
+8     2         -- It prints them separated by tab.
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>Function Definition</h2>
+        <p>There is a more convenient way to define functions: function function_name (arguments) code end</p>
+
+        <pre><code class="lua">
+> function doubler (x)
+>> return x * 2
+>> end
+> print( doubler(42) )
+84
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>Nil in conditions</h2>
+        <p>In conditions nil always evaluates to false.</p>
+        <p>It allows to do such witty tricks:</p>
+
+        <pre><code class="lua">
+> f = io.open("foo.txt")  -- Trying to open some file. If the file exists, than
+> if f then               -- variable f will contain some table, else f will be nil.
+>> print("File exists")
+>> else print("File not found") end
+File not found
+        </code></pre>
+      </section>
+
+      <section>
+        <h2>Default Arguments</h2>
+
+        <pre><code class="lua">
+> function multiplicator (x, y)
+>> y = y or 2    -- If y is nil, then it will be assigned to 2
+>> return x * y
+>> end
+> print(multiplicator(10, 3))
+30
+> print(multiplicator(10))
+20
+        </code></pre>
+      </section>
+    </div>
+  </div>
+
+<script src="js/reveal.min.js"></script>
+<!-- <script src="plugin/leap/leap.js"></script> -->
+<script type="text/javascript">
+  Reveal.initialize({
+
+    // leap: {
+    //     naturalSwipe   : true,    // Invert swipe gestures
+    //     pointerOpacity : 0.5,      // Set pointer opacity to 0.5
+    //     pointerColor   : '#d80000' // Red pointer
+    //   },
+
+    //   dependencies: [
+    //   { src: 'plugin/leap/leap.js', async: true }
+    //   ]
+  });
+
+</script>
+
+</body>
+</html>

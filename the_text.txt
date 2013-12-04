@@ -1,0 +1,348 @@
+
+The briefest introduction to Lua
+
+In order to configure and extend Awesome you will need to know at least a little Lua. There are a lot of books, manuals and tutorials on the Web, but who's got time for that? The aim of this page is to provide a very terse introduction which will familiarize newcomers with just enough about Lua to use and configure Awesome. In order to learn more Lua than that, you should read a more comprehensive tutorial.
+Contents
+[hide]
+
+    1 How to get started
+    2 What is Lua like?
+    3 General stuff
+    4 Types
+    5 Variables
+        5.1 Local
+        5.2 Multiple assignment
+    6 Control structures
+        6.1 Conditions
+        6.2 Loops
+    7 Functions
+    8 Useful stuff
+        8.1 Nil in conditions
+        8.2 Useful libraries
+    9 So far so good
+
+How to get started
+
+If you have Awesome installed, then you already have Lua. Open your terminal and type "lua". Here it is, your interactive lua environment.
+What is Lua like?
+
+    Lua has a mix of C-like and Pascal-like syntax. 
+
+    Lua is dynamically typed (like JavaScript). 
+
+General stuff
+
+    Spaces don't matter - use as many as you like 
+
+    Linebreaks don't matter - use as many as you like 
+
+    Indentation doesn't matter - use as much as you like 
+
+    No semicolons - use as much as you like don't use them 
+
+    On a given line, any text to the right of -- is considered a comment 
+
+Types
+
+    Numbers. 123 and 0.456 are numbers. Lua doesn't make a distinction between integer and real numbers, so don't worry, you can safely compare any number. 
+
+You can use the mathematical expressions +, -, * and / on numbers.
+
+   > print(2+2)
+   4
+   > print ( 5 / 2 )
+   2.5
+
+    Booleans. true and false are booleans. ==, >, <, >=, <= are comparison operators. ~= is "not equal" operator (instead of !=). There are also: and, or, not. 
+
+ > print(5 >= 3 and not (3 < 0))
+ true
+ > print(2.5 == 2)
+ false
+
+    Strings. Strings represent a sequence of characters. They can be enclosed in " (double quote) or ' (single quote) symbols (if you choose one, the other won't be considered a control symbol). You can also escape symbols with \. Concatenation operator is .. (instead of + in some languages). 
+
+ > print( "I am printin' \"My first string\"\non two lines" )
+ I am printin' "My first string"
+ on two lines
+
+Note: numbers are automatically treated as strings when concatenated, but other types(such as the boolean (5 == 0) in the example below) are not - use tostring on them.
+
+ > print( "This number is " .. 5 .. " and it equals zero: " .. tostring(5 == 0))
+ This number is 5 and it equals zero: false
+
+    nil. nil (like null in many languages) means nothing. And equals nothing except itself. You'll learn more about nil later on. 
+
+    Tables. Tables are ubiquitous in Lua. A table is an array and a hashmap (dictionary) at the same time. It is an ad hoc data structure. An empty table is defined like this: {}. Table keys can be of any type - integer, string, boolean or even another table. 
+
+ > x = {}          -- Wow, we defined our first variable! Yes, it is simple like this.
+ > x[1] = "our first item"
+ > print(x[1])     -- This is how we get a value by key from the table
+ our first item
+ > x["wm"] = "awesome"
+ > print(x["wm"])
+ awesome
+
+You can define a table and some initial key values simultaneously. This is done like: y = { key = "somevalue", anotherkey = "anothervalue" }. Comma is a separator here. Only string keys (without quotes) are supported this way.
+
+Lua offers one nifty mechanism for tables - you can access the values by the string key with following syntax: table.key. This creates an illusion of a data structure.
+
+ > x = {}
+ > x.color = "white"  -- Same as x["color"] = "white"
+ > print(x.color)
+ white
+ > x.wm_langs = { xmonad = "Haskell", awesome = "Lua" }
+ > print(x.wm_langs.awesome) -- Same as x["wm_langs"]["awesome"]
+ Lua
+
+If table doesn't have any value for the given key it means that the value equals nil.
+
+ > x = {}
+ > print(x.blahblah)
+ nil
+
+You can initialize tables without specifying keys, then it will act as an array with values mapped to number keys.
+
+ > x = { "first", "second", "third" }
+ > print(x[2])
+ second
+ > print(x.2)     -- No, no! Only string keys can be referenced like this!
+ stdin:1: `)' expected near `.2'
+ > print(x["2"])  -- 2 and "2" are not equal, of course
+ nil
+
+    Function. We will talk about functions later, now you should know, that any function can be assigned to a variable, passed as an argument or be returned from another function. 
+
+ > ourfunction = print
+ > ourfunction(2+2)
+ 4
+ > get_length = string.len
+ > ourfunction(get_length("some string"))
+ 11
+
+Variables
+
+As was said earlier, Lua is dynamically typed. That means that you don't have to define the type explicitly - any variable can have any type. Until variable gets declared it has the value nil. To declare a variable just assign value to it.
+
+ > print(a)  -- a wasn't declared yet
+ nil
+ > a = 42
+ > print(a)
+ 42
+ > a = "the answer is " .. a
+ > print(a)
+ the answer is 42
+
+Local
+
+Whenever you assign value to a variable, it becomes visible to the whole environment. It becomes global (you can avoid it by using modules, but we do not cover modules in this short tutorial). To keep your variables inside use the keyword local. With local your variable will be visible only to the block (function, control structure, file) where it is defined.
+
+ > a = 42
+ > if a == 42 then            -- If you press "Return" here, the next line will be 
+ >> local a = 10              -- preceeded with >>. This means that you are currently
+ >> print("Inside: " .. a)    -- inside the block (in this case, if..then block)
+ >> local b = 100
+ >> end
+ Inside: 10
+ > print(a)
+ 42                           -- See, local binding replaced a with 10 only inside the block
+ > print(b)
+ nil                          -- And the variable b was never globally declared
+
+Multiple assignment
+
+In Lua you can assign many values to many variables at the same time. It looks like this:
+
+ > a, b, c = 1, "and", 2
+ > print(a..b..c)
+ 1and2
+ > a, b, c = 1, "and"
+ > print(c)
+ nil      -- c hadn't got its value pair, so it was assigned to nil
+ > a, b, c = 5, "and", 6, "and", 7
+ > print(a..b..c)
+ 5and6    -- all unused values just went to Limbo
+
+Control structures
+Conditions
+
+The syntax is simple: if condition then code else code end.
+
+ > food = "beans"
+ > if food == "cake" then
+ >> print("Yummy!")
+ >> else
+ >> print("Ew, I won't eat that!")
+ >> end
+ Ew, I won't eat that!
+
+We can leave aside the else part if we are not interested in it.
+
+ > under_attack = true
+ > if under_attack then    -- Booleans can be used like this in conditions
+ >> print("Alarm!")
+ >> end
+ Alarm!
+
+If you want to analyze more conditions, use elseif:
+
+ > n = -42
+ > if n > 0 then
+ >> print("Positive")
+ >> elseif n < 0 then
+ >> print("Negative")
+ >> else
+ >> print("Zero")
+ >> end
+ Negative
+
+Loops
+
+    Conditional loop. Has the following syntax: while condition do code end. 
+
+ > i, r = 0, ""
+ > while i < 10 do
+ >> r = r .. i
+ >> i = i + 1
+ >> end
+ > print(r)
+ 0123456789
+
+    For loop. To loop through a range of numbers use the folowing construct: 
+
+for var = start_num,end_num do code end.
+
+ > r = ""
+ > for i = 0, 9 do
+ >> r = r .. i
+ >> end
+ > print(r)
+ 0123456789
+
+    Foreach loop. Lua allows you iterate through a table with the following syntax: 
+
+for key_var, value_var in pairs(table_name) do code end.
+
+ > a = { red="#FF0000", yellow="#FFFF00", white="#FFFFFF" }
+ > for name, color_code in pairs(a) do
+ >> print(name .. " is " .. color_code)
+ >> end
+ yellow is #FFFF00
+ white is #FFFFFF
+ red is #FF0000
+
+Note that the order of traversing is not guaranteed.
+
+You can iterate through an "array" with ipairs. In this case the order is guaranteed.
+
+ > a, caesar = { "veni, ", "vidi, ", "vici" }, ""
+ > for i, v in ipairs(a) do
+ >> caesar = caesar .. v    -- We just don't use the key, only value
+ >> end
+ > print(caesar)
+ veni, vidi, vici
+ 
+
+Functions
+
+The basic syntax for defining a function is: function_name = function(arguments) code end. To return the value from a function use the keyword return.
+
+ > sum = function(a,b) return a + b end
+ > print( sum(2,2) )
+ 4
+
+If you don't supply some arguments to a function, then they will just be assigned to nil.
+
+ > print_three_args = function(a, b, c)
+ >> print("First: " .. tostring(a))    -- We use tostring() here because 
+ >> print("Second: " .. tostring(b))   -- nil is not automatically cast
+ >> print("Third: " .. tostring(c))    -- when concatenated
+ >> end
+ > print_three_args(10,20)
+ First: 10
+ Second: 20
+ Third: nil
+
+The function can return more than one value at once. You need to use multiple assignment to get all result values.
+
+ > sum_and_diff = function(a, b) 
+ >> return a+b, a-b
+ >> end
+ > x, y = sum_and_diff(5,3)
+ > print(x, y)   -- print() can actually handle more than one argument.
+ 8     2         -- It prints them separated by tab.
+
+There is a more convenient way to define functions: function function_name (arguments) code end
+
+ > function doubler (x)
+ >> return x * 2
+ >> end
+ > print( doubler(42) )
+ 84
+
+Useful stuff
+Nil in conditions
+
+In conditions nil always evaluates to false. It allows to do such witty tricks:
+
+ > f = io.open("foo.txt")  -- Trying to open some file. If the file exists, than
+ > if f then               -- variable f will contain some table, else f will be nil.
+ >> print("File exists")
+ >> else print("File not found") end
+ File not found
+
+Or you can use this to supply default arguments to your function. Consider this example:
+
+ > function multiplicator (x, y)
+ >> y = y or 2    -- If y is nil, then it will be assigned to 2
+ >> return x * y
+ >> end
+ > print(multiplicator(10, 3))
+ 30
+ > print(multiplicator(10))
+ 20
+
+Useful libraries
+
+If you plan to write something for Awesome, you'll very soon need to learn how to use this libraries: string, table, io.
+So far so good
+
+Now you know pretty enough to at least understand the mess in your rc.lua file. This makes a beginning. The more you read and change your configuration file the more you'll learn about lua. If you really want to explore every part of Awesome and write something yourself you should consider reading the tutorial I mentioned at the beginning.
+
+Good luck hacking Lua!
+
+    Page
+    Discussion
+    View source
+    History
+
+    Log in / create account
+
+Navigation
+
+    Main page
+    Homepage
+    Recent changes
+    Random page
+    Help
+
+Search
+ 
+Toolbox
+
+    What links here
+    Related changes
+    Special pages
+    Printable version
+    Permanent link
+
+Attribution 3.0 Unported
+Powered by MediaWiki
+
+    This page was last modified on 15 November 2013, at 16:40.
+    This page has been accessed 11,658 times.
+    Content is available under Attribution 3.0 Unported.
+    Privacy policy
+    About awesome
+    Disclaimers
+
