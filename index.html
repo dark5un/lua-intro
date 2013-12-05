@@ -152,7 +152,6 @@ Lua
 
       <section>
         <h2>Nil/Empty Tables</h2>
-        <img src="images/empty_table.jpg">
         <p>If table doesn't have any value for the given key it means that the value equals nil.</p>
 
         <pre><code class="lua">
@@ -160,6 +159,7 @@ Lua
 > print(x.blahblah)
 nil
         </code></pre>
+        <img src="images/empty_table.jpg" style="height: 40% ; width: 40%">
       </section>
 
       <section>
@@ -439,6 +439,189 @@ File not found
 20
         </code></pre>
       </section>
+      
+      <section>
+        <h2>Enough about LUA...</h2>
+        <p>PHEW....</p>
+        <img src="images/relieved.gif">
+      </section>
+
+      <section>
+        <h1>LOVE2D !!!</h1>
+        <img src="images/yeah.gif">
+      </section>
+
+      <section>
+        <img src="images/love_2d.png">
+      </section>
+
+      <section>
+        <h2>My first game... lol</h2>
+        <p>Create a main.lua file inside a dir of your choosing...</p>
+        <p>Fill it with the code below:</p>
+        <pre><code class="lua">
+function love.draw()
+    love.graphics.print("Hello World", 400, 300)
+end          
+        </code></pre>        
+      </section>
+
+      <section>
+        <h1>The LOVE2D Basics</h1>
+        <h2>Callback Functions</h2>
+      </section>
+
+      <section>
+        <h2>love.load</h2>
+        <p>This function gets called only once, when the game is started, and is usually where you would load resources, initialize variables and set specific settings. All those things can be done anywhere else as well, but doing them here means that they are done once only, saving a lot of system resources. </p>
+        <pre><code class="lua">
+function love.load()
+   image = love.graphics.newImage("cake.jpg")
+   local f = love.graphics.newFont(12)
+   love.graphics.setFont(f)
+   love.graphics.setColor(0,0,0,255)
+   love.graphics.setBackgroundColor(255,255,255)
+end
+        </code></pre>        
+      </section>
+
+      <section>
+        <h2>love.update</h2>
+        <p>This function is called continuously and will probably be where most of your math is done. 'dt' stands for "delta time" and is the amount of seconds since the last time this function was called (which is usually a small value like 0.025714). </p>
+        <pre><code class="lua">
+function love.update(dt)
+   if love.keyboard.isDown("up") then
+      num = num + 100 * dt -- this would increment num by 100 per second
+   end
+end
+        </code></pre>        
+      </section>
+
+      <section>
+        <h1>DT?</h1>
+        <p>Returns the time between the last two frames.</p>
+        <pre><code class="lua">
+        dt = love.timer.getDelta( )
+        </code></pre>        
+      </section>
+
+      <section>
+        <h2>love.draw</h2>
+        <pre><code class="lua">
+function love.draw()
+   love.graphics.draw(image, imgx, imgy)
+   love.graphics.print("Click and drag the cake around or use the arrow keys", 10, 10)
+end
+        </code></pre>
+        <p>love.draw is where all the drawing happens (if that wasn't obvious enough already) and if you call any of the love.graphics.draw outside of this function then it's not going to have any effect. This function is also called continuously so keep in mind that if you change the font/color/mode/etc at the end of the function then it will have a effect on things at the beginning of the function. For example: </p>
+        <pre><code class="lua">
+function love.load()
+   love.graphics.setColor(0,0,0)
+end
+function love.draw()
+   love.graphics.print("This text is not black because of the line below", 100, 100)
+   love.graphics.setColor(255,0,0)
+   love.graphics.print("This text is red", 100, 200)
+end          
+        </code></pre>                        
+      </section>
+
+      <section>
+        <h2>love.mousepressed</h2>
+        <p>This function is called whenever a mouse button is pressed and it receives the button and the coordinates of where it was pressed. The button can be any of the constants. This function goes very well along with love.mousereleased. </p>
+        <pre><code class="lua">
+function love.mousepressed(x, y, button)
+   if button == 'l' then
+      imgx = x -- move image to where mouse clicked
+      imgy = y
+   end
+end          
+        </code></pre>        
+      </section>
+
+      <section>
+        <h2>love.mousereleased</h2>
+        <p>This function is called whenever a mouse button is released and it receives the button and the coordinates of where it was released. You can have this function together with love.mousepressed or separate, they aren't connected in any way.</p>
+        <pre><code class="lua">
+function love.mousereleased(x, y, button)
+   if button == 'l' then
+      fireSlingshot(x,y) -- this totally awesome custom function is defined elsewhere
+   end
+end          
+        </code></pre>        
+      </section>
+
+      <section>
+        <h2>love.keypressed</h2>
+        <p>This function is called whenever a keyboard key is pressed and receives the key that was pressed. The key can be any of the constants. This functions goes very well along with love.keyreleased.</p>
+        <pre><code class="lua">
+function love.keypressed(key, unicode)
+   if key == 'b' then
+      text = "The B key was pressed."
+   elseif key == 'a' then
+      a_down = true
+   end
+end          
+        </code></pre>        
+      </section>
+
+      <section>
+        <h2>love.keyreleased</h2>
+        <p>This function is called whenever a keyboard key is released and receives the key that was released. You can have this function together with love.keypressed or separate, they aren't connected in any way.</p>
+        <pre><code class="lua">
+function love.keyreleased(key, unicode)
+   if key == 'b' then
+      text = "The B key was released."
+   elseif key == 'a' then
+      a_down = false
+   end
+end          
+        </code></pre>        
+      </section>
+
+      <section>
+        <h2>love.focus</h2>
+        <pre><code class="lua">
+function love.focus(f)
+  if not f then
+    print("LOST FOCUS")
+  else
+    print("GAINED FOCUS")
+  end
+end          
+        </code></pre>
+        <p>This function is called whenever the user clicks off and on the LÖVE window. For instance, if they are playing a windowed game and a user clicks on his Internet browser, the game could be notified and automatically pause the game. </p>        
+        <pre><code class="lua">
+function love.focus(f) gameIsPaused = not f end
+function love.update(dt)
+    if gameIsPaused then return end
+    -- The rest of your love.update code goes here
+end
+        </code></pre>        
+      </section>
+
+      <section>
+        <h2>love.quit</h2>
+        <p>This function is called whenever the user clicks the windows close button (often an X). For instance, if the user decides they are done playing, they could click the close button. Then, before it closes, the game can save its state. </p>
+        <pre><code class="lua">
+function love.quit()
+  print("Thanks for playing! Come back soon!")
+end          
+        </code></pre>        
+      </section>
+
+      <section>
+        <h1>Enough I think lets CODE!</h1>
+        <img src="images/code-drunk.jpg">
+      </section>
+
+      <section>
+        <h1>THANKS!</h1>
+        <p>special thanks to awesome wm wiki and love2d wiki (did you expect me to write all these alone?)</p>
+        <p>twitter: @tehn00b</p>
+      </section>
+
+
     </div>
   </div>
 
