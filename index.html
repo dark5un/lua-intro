@@ -46,6 +46,7 @@
 
       <section>
         <h2>Fast syntax</h2>
+        <img src="images/fast.jpg" />
         <p>Spaces don't matter</p>
         <p>Linebreaks don't matter</p>
         <p>Indentation doesn't matter</p>
@@ -56,8 +57,8 @@
       <section>
         <h2>Numbers.</h2>
         <p>123 and 0.456 are numbers.</p> 
-        <p>Lua doesn't make a distinction between integer and real numbers, so don't worry, you can safely compare any number.</p> 
-        <p>You can use the mathematical expressions +, -, * and / on numbers.</p>
+        <p>Lua doesn't make a distinction between integer and real numbers.</p> 
+        <p>Mathematical expressions +, -, * and / can be used on numbers.</p>
 
         <pre><code class="lua">
 > print(2+2)
@@ -85,8 +86,8 @@ false
       <section>
         <h2>Strings.</h2> 
         <p>Strings represent a sequence of characters.</p> 
-        <p>They can be enclosed in " (double quote) or ' (single quote) symbols (if you choose one, the other won't be considered a control symbol).</p> 
-        <p>You can also escape symbols with \. Concatenation operator is .. (instead of + in some languages).</p> 
+        <p>They can be enclosed in " (double quote) or ' (single quote) symbols (Choosing one, the other won't be considered a control symbol).</p> 
+        <p>Escape symbols is done with \. Concatenation operator is .. (instead of + in some languages).</p> 
 
         <pre><code class="lua">
 > print( "I am printin' \"My first string\"\non two lines" )
@@ -97,7 +98,7 @@ on two lines
 
       <section>
         <h2>From Numbers To Strings</h2>
-        <p>numbers are automatically treated as strings when concatenated, but other types(such as the boolean (5 == 0) in the example below) are not - use tostring on them.</p>
+        <p>Numbers are automatically treated as strings when concatenated, but other types (such as the boolean (5 == 0) in the example below) are not - use tostring on them.</p>
 
         <pre><code class="lua">
 > print( "This number is " .. 5 .. " and it equals zero: " .. tostring(5 == 0))
@@ -107,7 +108,8 @@ This number is 5 and it equals zero: false
 
       <section>
         <h2>nil.</h2> 
-        <p>nil (like null in many languages) means nothing. And equals nothing except itself. You'll learn more about nil later on.</p> 
+        <p>nil (like null in many languages) means nothing. And equals nothing except itself.</p>
+        <img src="images/nil_wow.jpg" /> 
       </section>
 
       <section>
@@ -150,6 +152,7 @@ Lua
 
       <section>
         <h2>Nil/Empty Tables</h2>
+        <img src="images/empty_table.jpg">
         <p>If table doesn't have any value for the given key it means that the value equals nil.</p>
 
         <pre><code class="lua">
